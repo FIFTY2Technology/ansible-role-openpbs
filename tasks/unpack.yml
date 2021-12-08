@@ -1,0 +1,31 @@
+---
+
+- name: Set name for compile directory based on OpenPBS version
+  set_fact:
+    _openpbs_compile_dir: "{{ openpbs_home_dir }}/openpbs_v{{ openpbs_version }}"
+
+- name: Create directory to unpack into
+  file:
+    name: "{{ _openpbs_compile_dir }}"
+    state: directory
+    owner: "{{ openpbs_user }}"
+    group: "{{ openpbs_group }}"
+    mode: '0750'
+
+###
+# From 'man 1 tar':
+# File name transformations
+#   --strip-components=NUMBER
+#     Strip NUMBER leading components from file names on extraction.
+###
+- name: Unpack OpenPBS archive
+  unarchive:
+    src: "{{ _download_archive.dest }}"
+    dest: "{{ _openpbs_compile_dir }}"
+    owner: "{{ openpbs_user }}"
+    group: "{{ openpbs_group }}"
+    extra_opts:
+      - --strip-components=1
+  check_mode: false
+  notify: Clean up temporary downloads
+

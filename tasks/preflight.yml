@@ -1,0 +1,78 @@
+---
+
+- name: Gather facts about existing OpenPBS installation
+  stat:
+    path: /opt/pbs/libexec/pbs_init.d
+  register: _openpbs_installation
+
+- block:
+    - name: Get version of currently installed OpenPBS
+      command:
+        cmd: /opt/pbs/libexec/pbs_init.d --version
+      register: _openpbs_installed_version_raw
+      changed_when: false
+
+    ###
+    # Version output is formatted like this: 'pbs_version = 20.0.1'
+    ###
+    - name: Format output of version checking
+      set_fact:
+        _openpbs_installed_version: "{{ _openpbs_installed_version_raw.stdout.split('=')[1] | trim }}"
+  when:
+    - _openpbs_installation.stat.exists
+
+###
+# For the 'version()' test later, this variable has to be defined for all nodes.
+###
+- name: Request OpenPBS installation
+  set_fact:
+    _openpbs_installed_version: 0.0
+  when:
+    - not _openpbs_installation.stat.exists
+
+###
+# Only required if we don't know the exact version number from 'openpbs_version'.
+###
+- block:
+    - name: Check for latest OpenPBS version available
+      uri:
+        url: "https://api.github.com/repos/openpbs/openpbs/releases/latest"
+        method: GET
+        return_content: true
+        status_code: 200
+        body_format: json
+      check_mode: false
+      changed_when: false
+      register: _openpbs_release
+      retries: 3
+      delay: 5
+      delegate_to: localhost
+      become: false
+      run_once: true
+
+    ###
+    # If 'openpbs_version' is set to 'latest', we overwrite it here to the correct
+    # version number provided by the GitHub API.
+    ###
+    - name: Set OpenPBS version available
+      set_fact:
+        openpbs_version: "{{ _openpbs_release.json.tag_name[1:] }}"
+  when:
+    - openpbs_version == 'latest'
+
+- name: Create user {{ openpbs_user }}
+  user:
+    name: "{{ openpbs_user }}"
+    home: "{{ openpbs_home_dir }}"
+    password: '*'
+    state: present
+
+- name: Grant user {{ openpbs_user }} sudo rights
+  template:
+    src: sudoers.d.j2
+    dest: /etc/sudoers.d/openpbs
+    validate: '/usr/sbin/visudo -cf %s'
+    owner: root
+    group: root
+    mode: '0440'
+

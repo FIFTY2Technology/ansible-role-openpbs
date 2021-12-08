@@ -1,0 +1,12 @@
+---
+
+- name: Clean up temporary downloads
+  file:
+    path: "{{ _download_archive.dest }}"
+    state: absent
+
+- name: Restart PBS service
+  service:
+    name: pbs
+    state: restarted
+

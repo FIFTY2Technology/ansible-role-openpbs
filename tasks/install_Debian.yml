@@ -1,0 +1,49 @@
+---
+
+- name: Install required packages for building OpenPBS - Debian
+  apt:
+    state: present
+    update_cache: true
+    cache_valid_time: 86400
+    name:
+      - gcc
+      - make
+      - libtool
+      - libhwloc-dev
+      - libx11-dev
+      - libxt-dev
+      - libedit-dev
+      - libical-dev
+      - ncurses-dev
+      - perl
+      - postgresql-server-dev-all
+      - postgresql-contrib
+      - python3-dev
+      - tcl-dev
+      - tk-dev
+      - swig
+      - libexpat-dev
+      - libssl-dev
+      - libxext-dev
+      - libxft-dev
+      - autoconf
+      - automake
+      - g++
+
+- name: Install required packages for running OpenPBS - Debian
+  apt:
+    state: present
+    update_cache: true
+    cache_valid_time: 86400
+    name:
+      - expat
+      - libedit2
+      - postgresql
+      - python3
+      - postgresql-contrib
+      - sendmail-bin
+      - sudo
+      - tcl
+      - tk
+      - libical3
+

@@ -1,0 +1,80 @@
+---
+
+- name: Install PowerTools repository - CentOS
+  dnf:
+    state: present
+    update_cache: true
+    name: dnf-plugins-core
+
+###
+# As worked around here: https://github.com/ansible/ansible/issues/46963#issuecomment-722999113
+# 'create: false' raises an error if not already installed
+###
+- name: Activate PowerTools repository - CentOS 8.2 and earlier
+  lineinfile:
+    path: /etc/yum.repos.d/CentOS-PowerTools.repo
+    create: false
+    regexp: enabled=
+    line: enabled=1
+  when:
+    - ansible_distribution_version <= '8.2'
+
+###
+# Working around a change in CentOS 8.3.
+# https://wiki.centos.org/Manuals/ReleaseNotes/CentOS8.2011#Yum_repo_file_and_repoid_changes
+###
+- name: Activate PowerTools repository - CentOS 8.3 and later
+  lineinfile:
+    path: /etc/yum.repos.d/CentOS-Linux-PowerTools.repo
+    create: false
+    regexp: enabled=
+    line: enabled=1
+  when:
+    - ansible_distribution_version >= '8.3'
+
+- name: Install required packages for building OpenPBS - CentOS
+  dnf:
+    state: present
+    update_cache: true
+    name:
+      - gcc
+      - make
+      - rpm-build
+      - libtool
+      - hwloc-devel
+      - libX11-devel
+      - libXt-devel
+      - libedit-devel
+      - libical-devel
+      - ncurses-devel
+      - perl
+      - postgresql-devel
+      - postgresql-contrib
+      - python3-devel
+      - tcl-devel
+      - tk-devel
+      - swig
+      - expat-devel
+      - openssl-devel
+      - libXext
+      - libXft
+      - autoconf
+      - automake
+      - gcc-c++
+
+- name: Install required packages for running OpenPBS - CentOS
+  dnf:
+    state: present
+    update_cache: true
+    name:
+      - expat
+      - libedit
+      - postgresql-server
+      - postgresql-contrib
+      - python3
+      - sendmail
+      - sudo
+      - tcl
+      - tk
+      - libical
+

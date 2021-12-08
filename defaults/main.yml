@@ -1,0 +1,33 @@
+---
+
+openpbs_user: openpbs
+openpbs_group: openpbs
+
+openpbs_home_dir: "/home/{{ openpbs_user }}"
+
+###
+# OpenPBS version to install. Must be 'latest' or match a tag name in OpenPBS
+# GitHub repostiory: https://github.com/openpbs/openpbs/tags
+###
+openpbs_version: latest
+
+openpbs_prefix: /opt/pbs
+
+openpbs_server_hostname: "{{ groups['pbsscheduler'] | first }}"
+
+openpbs_queue:
+  - name: myqueue
+    type: execution
+    enabled: true
+    started: true
+
+###
+# Decide if a host is a PBS MOM or a PBS server, based on its group memberships.
+###
+openpbs_server: "{{ \
+  ( inventory_hostname in groups['pbsscheduler'] ) and not
+  ( inventory_hostname in groups['mpinodes'] ) }}"
+openpbs_mom: "{{ \
+  ( inventory_hostname in groups['mpinodes'] ) and not
+  ( inventory_hostname in groups['pbsscheduler'] ) }}"
+
