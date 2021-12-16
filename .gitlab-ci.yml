@@ -1,0 +1,64 @@
+---
+
+stages:
+  - lint
+  - test
+
+###
+# Setup
+###
+
+.activate-python-venv: &activate-python-venv
+  - . venv/bin/activate
+
+setup_environment:
+  stage: setup
+  script:
+    - python -m venv --copies venv
+    - *activate-python-venv
+    - pip install --upgrade pip
+    - pip install ${FIFTY2_PYPI_MIRROR} --requirement requirements.txt --no-cache
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - venv/
+  tags:
+    - Automation
+
+###
+# Linting
+###
+
+ansible-lint:
+  stage: lint
+  needs:
+    - setup_environment
+  script:
+    - *activate-python-venv
+    - ansible-lint
+
+yamllint:
+  stage: lint
+  needs:
+    - setup_environment
+  script:
+    - *activate-python-venv
+    - yamllint .
+
+###
+# Test
+###
+
+molecule-test:
+  stage: test
+  needs:
+    - setup_environment
+  script:
+    - *activate-python-venv
+    - molecule test
+  parallel:
+    matrix:
+      - MOLECULE_DISTRO: [centos7, centos8, debian10, debian11, ubuntu1804, ubuntu2004]
+  tags:
+    - Docker_Linux
+
