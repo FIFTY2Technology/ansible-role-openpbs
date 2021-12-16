@@ -62,7 +62,11 @@ molecule-test:
   needs:
     - setup_environment
   script:
+    - ls -la
+    - python -V
     - *activate-python-venv
+    - python -V
+    - pip freeze
     - molecule test
   parallel:
     matrix:
