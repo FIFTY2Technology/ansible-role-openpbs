@@ -13,7 +13,7 @@ stages:
   - . venv/bin/activate
 
 setup_environment:
-  image: python:3.9-bullseye
+  image: python:721de1d0aea3331da282531b8b9e428d552b89bd6fd0d0c14e634deaddc241fc # 3.9.2-slim-buster
   stage: setup
   script:
     - python -m venv --copies venv
@@ -34,7 +34,7 @@ setup_environment:
 
 ansible-lint:
   stage: lint
-  image: python:3.9-bullseye
+  image: python:721de1d0aea3331da282531b8b9e428d552b89bd6fd0d0c14e634deaddc241fc # 3.9.2-slim-buster
   needs:
     - setup_environment
   script:
@@ -45,7 +45,7 @@ ansible-lint:
 
 yamllint:
   stage: lint
-  image: python:3.9-bullseye
+  image: python:721de1d0aea3331da282531b8b9e428d552b89bd6fd0d0c14e634deaddc241fc # 3.9.2-slim-buster
   needs:
     - setup_environment
   script:
