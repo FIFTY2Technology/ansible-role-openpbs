@@ -38,6 +38,8 @@ ansible-lint:
   script:
     - *activate-python-venv
     - ansible-lint
+  tags:
+    - Automation
 
 yamllint:
   stage: lint
@@ -46,6 +48,8 @@ yamllint:
   script:
     - *activate-python-venv
     - yamllint .
+  tags:
+    - Automation
 
 ###
 # Test
