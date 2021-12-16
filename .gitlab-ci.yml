@@ -33,6 +33,7 @@ setup_environment:
 
 ansible-lint:
   stage: lint
+  image: python:3.9-bullseye
   needs:
     - setup_environment
   script:
@@ -43,6 +44,7 @@ ansible-lint:
 
 yamllint:
   stage: lint
+  image: python:3.9-bullseye
   needs:
     - setup_environment
   script:
@@ -66,5 +68,5 @@ molecule-test:
     matrix:
       - MOLECULE_DISTRO: [centos7, centos8, debian10, debian11, ubuntu1804, ubuntu2004]
   tags:
-    - Docker_Linux
+    - Docker_native_Linux
 
