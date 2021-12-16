@@ -14,21 +14,3 @@
     mode: '0644'
   notify: Restart PBS service
 
-- name: Set own hostname in /etc/hosts
-  lineinfile:
-    path: /etc/hosts
-    line: "{{ ansible_default_ipv4.address }} {{ inventory_hostname }}"
-    state: present
-    owner: root
-    group: root
-    mode: '0644'
-
-- name: Set hostname with IP 127.0.0.1 to localhost if present
-  lineinfile:
-    path: /etc/hosts
-    regex: '^127\.0\.0\.1'
-    line: 127.0.0.1 localhost
-    owner: root
-    group: root
-    mode: '0644'
-
