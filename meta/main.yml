@@ -1,0 +1,24 @@
+---
+
+galaxy_info:
+  description: Install OpenPBS, an HPC workload manager and job scheduler.
+  company: FIFTY2 Technology GmbH
+  license: GPL-3.0-only
+  min_ansible_version: 2.11
+  platforms:
+  - name: Debian
+    versions:
+      - 10
+      - 11
+  - name: CentOS
+    versions:
+      - 7
+      - 8
+  - name: Ubuntu
+    versions:
+      - bionic
+      - focal
+  galaxy_tags:
+    - hpc
+    - pbs
+
