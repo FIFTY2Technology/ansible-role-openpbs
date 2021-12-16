@@ -6,7 +6,7 @@ driver:
   name: docker
 platforms:
   - name: mpinode1
-    image: geerlingguy/docker-centos8-ansible
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos8}-ansible:latest"
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     command: ${MOLECULE_DOCKER_COMMAND:-""}
@@ -15,7 +15,7 @@ platforms:
     pre_build_image: true
     privileged: true
   - name: mpinode2
-    image: geerlingguy/docker-centos8-ansible
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos8}-ansible:latest"
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     command: ${MOLECULE_DOCKER_COMMAND:-""}
@@ -24,7 +24,7 @@ platforms:
     pre_build_image: true
     privileged: true
   - name: pbsheadnode
-    image: geerlingguy/docker-centos8-ansible
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos8}-ansible:latest"
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     command: ${MOLECULE_DOCKER_COMMAND:-""}

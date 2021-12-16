@@ -11,10 +11,26 @@
     mpi_node_user_home: "/home/{{ mpi_node_user }}"
 
   tasks:
-    - name: Install OpenSSH server
-      package:
-        name: openssh-server
+    - name: Update package manager (Debian/Ubuntu)
+      apt:
+        update_cache: true
+      when: ansible_os_family == 'Debian'
+
+    - name: Install OpenSSH packages (RedHat)
+      dnf:
+        name:
+          - openssh-server
+          - openssh-clients
         state: present
+      when: ansible_os_family == 'RedHat'
+
+    - name: Install OpenSSH packages (Debian/Ubuntu)
+      apt:
+        name:
+          - openssh-server
+          - openssh-client
+         state: present
+      when: ansible_os_family == 'Debian'
 
     - name: Start OpenSSH server
       systemd:
