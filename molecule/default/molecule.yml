@@ -13,7 +13,9 @@ platforms:
     networks:
       - name: openpbs
     pre_build_image: true
-    privileged: true
+    tmpfs:
+      - /run
+      - /tmp
   - name: mpinode2
     image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos8}-ansible:latest"
     volumes:
@@ -22,7 +24,9 @@ platforms:
     networks:
       - name: openpbs
     pre_build_image: true
-    privileged: true
+    tmpfs:
+      - /run
+      - /tmp
   - name: pbsheadnode
     image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos8}-ansible:latest"
     volumes:
@@ -31,7 +35,9 @@ platforms:
     networks:
       - name: openpbs
     pre_build_image: true
-    privileged: true
+    tmpfs:
+      - /run
+      - /tmp
 provisioner:
   name: ansible
   connection_options:
