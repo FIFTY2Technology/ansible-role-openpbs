@@ -16,6 +16,7 @@ platforms:
     tmpfs:
       - /run
       - /tmp
+    privileged: true
   - name: mpinode2
     image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos8}-ansible:latest"
     volumes:
@@ -27,6 +28,7 @@ platforms:
     tmpfs:
       - /run
       - /tmp
+    privileged: true
   - name: pbsheadnode
     image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos8}-ansible:latest"
     volumes:
@@ -38,6 +40,7 @@ platforms:
     tmpfs:
       - /run
       - /tmp
+    privileged: true
 provisioner:
   name: ansible
   connection_options:
