@@ -68,7 +68,7 @@ molecule-test:
     - molecule test
   parallel:
     matrix:
-      - MOLECULE_DISTRO: [centos7, centos8, debian10, debian11, ubuntu1804, ubuntu2004]
+      - MOLECULE_DISTRO: [centos8, debian10, debian11, ubuntu1804, ubuntu2004]
   tags:
     - Docker_native_Linux
 
