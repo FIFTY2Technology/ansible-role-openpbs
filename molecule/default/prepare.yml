@@ -29,7 +29,7 @@
         name:
           - openssh-server
           - openssh-client
-         state: present
+        state: present
       when: ansible_os_family == 'Debian'
 
     - name: Start OpenSSH server
