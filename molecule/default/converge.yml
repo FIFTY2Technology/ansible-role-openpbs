@@ -1,0 +1,9 @@
+---
+
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include ansible-role-openpbs"
+      include_role:
+        name: "ansible-role-openpbs"
+

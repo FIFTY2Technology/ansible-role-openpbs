@@ -1,0 +1,50 @@
+---
+
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: mpinode1
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos8}-ansible:latest"
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    networks:
+      - name: openpbs
+    pre_build_image: true
+    privileged: true
+  - name: mpinode2
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos8}-ansible:latest"
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    networks:
+      - name: openpbs
+    pre_build_image: true
+    privileged: true
+  - name: pbsheadnode
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos8}-ansible:latest"
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    networks:
+      - name: openpbs
+    pre_build_image: true
+    privileged: true
+provisioner:
+  name: ansible
+  connection_options:
+    pipelining: false
+  inventory:
+    hosts:
+      mpinodes:
+        hosts:
+          mpinode1:
+          mpinode2:
+      pbsscheduler:
+        hosts:
+          pbsheadnode:
+verifier:
+  name: ansible
+
