@@ -6,4 +6,5 @@ exclude_paths:
 skip_list:
   - 'line-length'
   - 'yaml'
+  - 'meta-no-info'
 
