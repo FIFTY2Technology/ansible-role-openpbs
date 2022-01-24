@@ -1,8 +1,6 @@
 # Description
 This role installs and configures OpenPBS on computenodes, servernodes, or both. It follows the `INSTALL` instructions from the [official GitHub repository](https://github.com/openpbs/openpbs/blob/master/INSTALL).
 
-Relevant MR: !63
-
 **Note**: When applied to a node with a running simulation and a configuration change takes place, OpenPBS is restarted and therefore also restarts the simulation. To be on the safe side, only run on idling nodes.
 
 # Requirements
@@ -12,6 +10,7 @@ Relevant MR: !63
 * Working DNS name resolution. Includes resolution of FQDNs and non-FQDNs:
   * Make sure your DNS servers resolve hostnames correctly
   * Make sure `/etc/resolv.conf` includes both correct `search` and `domain` entries
+  * Hostnames must be in non-FQDN format (`foo` instead of `foo.example.org`)
 
 # Role Variables
 All variables which can be overridden are stored in defaults/main.yml file as well as in table below.
