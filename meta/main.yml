@@ -10,8 +10,8 @@ galaxy_info:
   platforms:
     - name: Debian
       versions:
-        - 10
-    - name: CentOS
+        - buster
+    - name: EL
       versions:
         - 8
     - name: Ubuntu
