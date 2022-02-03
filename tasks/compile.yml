@@ -41,4 +41,3 @@
       mode: '04755'
     - path: "{{ openpbs_prefix }}/sbin/pbs_rcp"
       mode: '04755'
-
