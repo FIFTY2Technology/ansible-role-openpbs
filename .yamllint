@@ -17,6 +17,7 @@ rules:
   empty-lines:
     max-end: 1
     level: error
+  new-line-at-end-of-file: enable
   indentation:
     spaces: 2
   octal-values:
