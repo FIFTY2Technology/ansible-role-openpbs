@@ -71,4 +71,3 @@ molecule-test:
       - MOLECULE_DISTRO: [centos8, debian10, ubuntu1804]
   tags:
     - Docker_native_Linux
-

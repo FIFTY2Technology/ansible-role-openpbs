@@ -56,4 +56,3 @@ provisioner:
           pbsheadnode:
 verifier:
   name: ansible
-

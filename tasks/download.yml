@@ -18,4 +18,3 @@
   become: false
   delegate_to: localhost
   run_once: true
-

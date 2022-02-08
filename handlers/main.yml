@@ -9,4 +9,3 @@
   service:
     name: pbs
     state: restarted
-

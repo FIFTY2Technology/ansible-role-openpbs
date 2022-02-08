@@ -30,4 +30,3 @@ openpbs_server: "{{ \
 openpbs_mom: "{{ \
   ( inventory_hostname in groups['mpinodes'] ) and not
   ( inventory_hostname in groups['pbsscheduler'] ) }}"
-

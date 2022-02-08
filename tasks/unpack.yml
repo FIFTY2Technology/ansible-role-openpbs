@@ -28,4 +28,3 @@
       - --strip-components=1
   check_mode: false
   notify: Clean up temporary downloads
-
