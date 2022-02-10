@@ -2,7 +2,7 @@
 
 galaxy_info:
   role_name: openpbs
-  namespace: fifty2
+  namespace: fifty2technology
   description: Install OpenPBS, an HPC workload manager and a job scheduler.
   company: FIFTY2 Technology GmbH
   license: GPL-3.0-only
