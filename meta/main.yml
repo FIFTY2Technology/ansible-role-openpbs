@@ -4,6 +4,7 @@ galaxy_info:
   role_name: openpbs
   namespace: fifty2technology
   description: Install OpenPBS, an HPC workload manager and a job scheduler.
+  author: FIFTY2 Technology GmbH
   company: FIFTY2 Technology GmbH
   license: GPL-3.0-only
   min_ansible_version: 2.11
