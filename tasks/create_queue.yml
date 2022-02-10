@@ -73,4 +73,3 @@
         - _openpbs_add_nodes.rc == 218
         - '"Error (15066)" in _openpbs_add_nodes.stderr'
   when: openpbs_mom
-

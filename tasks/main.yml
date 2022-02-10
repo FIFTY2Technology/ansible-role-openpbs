@@ -47,4 +47,3 @@
 
 - import_tasks: create_queue.yml
   tags: create_queue
-
