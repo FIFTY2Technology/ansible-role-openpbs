@@ -51,7 +51,7 @@ provisioner:
         hosts:
           mpinode1:
           mpinode2:
-      pbsscheduler:
+      pbsheadnode:
         hosts:
           pbsheadnode:
 verifier:

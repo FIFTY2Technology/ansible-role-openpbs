@@ -71,7 +71,7 @@
             - _openpbs_add_nodes.rc != 0
             - _openpbs_add_nodes.rc != 218
           changed_when: false
-          delegate_to: "{{ groups['pbsscheduler'] | first }}"
+          delegate_to: "{{ groups['pbsheadnode'] | first }}"
 
         - name: Node was already registered
           ansible.builtin.debug:
