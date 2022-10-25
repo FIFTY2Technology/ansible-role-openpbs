@@ -4,5 +4,79 @@
   hosts: all
   tasks:
     - name: "Include ansible-role-openpbs"
-      include_role:
+      ansible.builtin.include_role:
         name: "ansible-role-openpbs"
+
+    - name: Create queue on OpenPBS server
+      block:
+        - name: Create OpenPBS queue
+          ansible.builtin.shell: >
+              create queue {{ queue.name | quote }}
+              queue_type={{ queue.type | quote }}
+          args:
+            executable: "{{ openpbs_prefix }}/bin/qmgr"
+          register: _openpbs_create_queue
+          failed_when: false
+          changed_when:
+            - _openpbs_create_queue.rc == 0
+          loop: "{{ openpbs_queue }}"
+          loop_control:
+            label: "{{ queue.name }}"
+            loop_var: queue
+
+        ###
+        # Queue already exists
+        ###
+        - name: Queue already exists, printing command output
+          ansible.builtin.debug:
+            msg: "{{ item.stderr_lines[0] }}"
+          when:
+            - item.rc == 177
+          loop: "{{ _openpbs_create_queue.results }}"
+          loop_control:
+            label: "{{ item.queue.name }}"
+
+        ###
+        # Return code is always zero on this one, wheather it gets set or is already set.
+        # In case the return code is different, let's be safe and fail.
+        # Although 'qmgr -c "help set"' demands 'no intervening whitespace' between
+        # multiple names, it works on all tested platforms (OpenPBS v20.0.1).
+        ###
+        - name: Set OpenPBS queue properties
+          ansible.builtin.shell: >
+              set queue {{ queue.name | quote }}
+              started={{ queue.started | ternary('true', 'false') }},
+              enabled={{ queue.enabled | ternary('true', 'false') }}
+          args:
+            executable: "{{ openpbs_prefix }}/bin/qmgr"
+          register: _openpbs_configure_queue
+          failed_when:
+            - _openpbs_configure_queue.rc > 0
+          changed_when: false
+          loop: "{{ openpbs_queue }}"
+          loop_control:
+            label: "{{ queue.name }}"
+            loop_var: queue
+      when: openpbs_server
+
+    - name: Add all compute nodes to server
+      block:
+        - name: Register all compute nodes in server
+          ansible.builtin.shell: >
+              create node {{ inventory_hostname_short | quote }}
+          args:
+            executable: "{{ openpbs_prefix }}/bin/qmgr"
+          register: _openpbs_add_nodes
+          failed_when:
+            - _openpbs_add_nodes.rc != 0
+            - _openpbs_add_nodes.rc != 218
+          changed_when: false
+          delegate_to: "{{ groups['pbsscheduler'] | first }}"
+
+        - name: Node was already registered
+          ansible.builtin.debug:
+            msg: "Node already exists"
+          when:
+            - _openpbs_add_nodes.rc == 218
+            - '"Error (15066)" in _openpbs_add_nodes.stderr'
+      when: openpbs_mom
