@@ -5,7 +5,16 @@
   gather_facts: false
 
   vars:
-    - mpi_node_user: mpiuser
+    mpi_node_user: mpiuser
+
+  pre_tasks:
+    ###
+    # Only required for systemd-enabled containers. Removes '/run/nologin'.
+    ###
+    - name: Start systemd-user-sessions service to allow SSH login as unprivileged user
+      ansible.builtin.systemd:
+        name: systemd-user-sessions.service
+        state: started
 
   tasks:
     - name: Check for presence of all PBS moms

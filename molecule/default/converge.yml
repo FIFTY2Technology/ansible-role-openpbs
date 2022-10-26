@@ -2,11 +2,11 @@
 
 - name: Converge
   hosts: all
-  tasks:
-    - name: "Include ansible-role-openpbs"
-      ansible.builtin.include_role:
-        name: "ansible-role-openpbs"
 
+  roles:
+    - role: fifty2technology.openpbs
+
+  post_tasks:
     - name: Create queue on OpenPBS server
       block:
         - name: Create OpenPBS queue

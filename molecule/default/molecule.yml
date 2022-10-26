@@ -3,44 +3,41 @@
 dependency:
   name: galaxy
 driver:
-  name: docker
+  name: podman
 platforms:
   - name: mpinode1
-    image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos8}-ansible:latest"
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-rockylinux9}-ansible:latest"
+    command: /sbin/init
+    network: "openpbs"
+    pre_build_image: true
+    privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    command: ${MOLECULE_DOCKER_COMMAND:-""}
-    networks:
-      - name: openpbs
-    pre_build_image: true
     tmpfs:
       - /run
       - /tmp
-    privileged: true
   - name: mpinode2
-    image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos8}-ansible:latest"
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-rockylinux9}-ansible:latest"
+    command: /sbin/init
+    network: "openpbs"
+    pre_build_image: true
+    privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    command: ${MOLECULE_DOCKER_COMMAND:-""}
-    networks:
-      - name: openpbs
-    pre_build_image: true
     tmpfs:
       - /run
       - /tmp
-    privileged: true
   - name: pbsheadnode
-    image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos8}-ansible:latest"
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-rockylinux9}-ansible:latest"
+    command: /sbin/init
+    network: "openpbs"
+    pre_build_image: true
+    privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    command: ${MOLECULE_DOCKER_COMMAND:-""}
-    networks:
-      - name: openpbs
-    pre_build_image: true
     tmpfs:
       - /run
       - /tmp
-    privileged: true
 provisioner:
   name: ansible
   connection_options:
