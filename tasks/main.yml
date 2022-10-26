@@ -3,27 +3,8 @@
 - name: Prerequisites
   ansible.builtin.import_tasks: preflight.yml
 
-- name: Install required packages for building and running OpenPBS on Debian
-  ansible.builtin.include_tasks: install_Debian.yml
-  when:
-    - ansible_os_family == 'Debian'
-    - ansible_distribution == 'Debian'
-
-- name: Install required packages for building and running OpenPBS on Ubuntu
-  ansible.builtin.include_tasks: install_Ubuntu.yml
-  when:
-    - ansible_os_family == 'Debian'
-    - ansible_distribution == 'Ubuntu'
-
-- name: Install required packages for building and running OpenPBS on CentOS
-  ansible.builtin.include_tasks: install_CentOS.yml
-  when:
-    - ansible_os_family == 'RedHat'
-    - ansible_distribution == 'CentOS'
-
-###
-# Other distributions (we use) are not supported by OpenPBS.
-###
+- name: Install required packages for building and running OpenPBS
+  ansible.builtin.include_tasks: install.yml
 
 - name: Import download tasks
   ansible.builtin.import_tasks: download.yml

@@ -11,6 +11,7 @@ This role installs and configures OpenPBS on computenodes, servernodes, or both.
   * Make sure your DNS servers resolve hostnames correctly
   * Make sure `/etc/resolv.conf` includes both correct `search` and `domain` entries
   * Hostnames must be in non-FQDN format (`foo` instead of `foo.example.org`)
+* RedHat-based distributions need PowerTools/CRB repository enabled.
 
 # Role Variables
 All variables which can be overridden are stored in defaults/main.yml file as well as in table below.

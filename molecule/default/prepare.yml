@@ -16,6 +16,31 @@
         update_cache: true
       when: ansible_os_family == 'Debian'
 
+    - name: Activate PowerTools (CBR) repository for Rocky Linux
+      block:
+        ###
+        # Rocky asks to verify the GPG key upon first pull of the CRB repository,
+        # ignore it.
+        ###
+        - name: Install epel-release - RockyLinux 9
+          ansible.builtin.dnf:
+            name: epel-release
+            disable_gpg_check: true
+            update_cache: true
+            state: latest
+
+        - name: Check status of CRB repository - RockyLinux 9
+          ansible.builtin.command:
+            cmd: crb status
+          changed_when: false
+          register: _crb_status
+
+        - name: Activate CRB repository - RockyLinux 9
+          ansible.builtin.command:
+            cmd: crb enable
+          when: _crb_status.stdout == 'CRB repo is disabled'
+      when: ansible_os_family == 'RedHat'
+
     - name: Install OpenSSH packages (RedHat)
       ansible.builtin.dnf:
         name:
