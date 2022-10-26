@@ -12,12 +12,12 @@
 
   tasks:
     - name: Update package manager (Debian/Ubuntu)
-      apt:
+      ansible.builtin.apt:
         update_cache: true
       when: ansible_os_family == 'Debian'
 
     - name: Install OpenSSH packages (RedHat)
-      dnf:
+      ansible.builtin.dnf:
         name:
           - openssh-server
           - openssh-clients
@@ -25,7 +25,7 @@
       when: ansible_os_family == 'RedHat'
 
     - name: Install OpenSSH packages (Debian/Ubuntu)
-      apt:
+      ansible.builtin.apt:
         name:
           - openssh-server
           - openssh-client
@@ -33,7 +33,7 @@
       when: ansible_os_family == 'Debian'
 
     - name: Start OpenSSH server
-      systemd:
+      ansible.builtin.systemd:
         name: sshd
         state: started
 
@@ -43,12 +43,12 @@
           - 'ansible_ssh_host_key_ecdsa_public*'
 
     - name: Create MPI user account
-      user:
+      ansible.builtin.user:
         name: "{{ mpi_node_user }}"
         home: "{{ mpi_node_user_home }}"
 
     - name: Create .ssh directory for user {{ mpi_node_user }}
-      file:
+      ansible.builtin.file:
         path: "{{ mpi_node_user_home }}/.ssh/"
         state: directory
         owner: "{{ mpi_node_user }}"
@@ -56,7 +56,7 @@
         mode: '0700'
 
     - name: Generate SSH keypair for user {{ mpi_node_user }}
-      openssh_keypair:
+      ansible.builtin.openssh_keypair:
         path: "{{ mpi_node_user_home }}/.ssh/id_ed25519"
         comment: "{{ mpi_node_user }}@{{ inventory_hostname }}"
         owner: "{{ mpi_node_user }}"
@@ -66,7 +66,7 @@
       register: _mpi_node_new_ssh_key
 
     - name: Distribute all group's SSH public keys to MPI nodes
-      known_hosts:
+      ansible.builtin.known_hosts:
         path: "{{ mpi_node_user_home }}/.ssh/known_hosts"
         key: >-
           {{ hostvars[item]['inventory_hostname'] }}
@@ -77,14 +77,14 @@
       loop: "{{ ansible_play_batch }}"
 
     - name: Distribute SSH public keys over all MPI nodes
-      authorized_key:
+      ansible.builtin.authorized_key:
         user: "{{ mpi_node_user }}"
         state: present
         key: "{{ hostvars[item]['_mpi_node_new_ssh_key']['public_key'] }} {{ mpi_node_user }}@{{ item }}"
       loop: "{{ ansible_play_batch }}"
 
     - name: Set correct permissions for SSH known_hosts file
-      file:
+      ansible.builtin.file:
         path: "{{ mpi_node_user_home }}/.ssh/known_hosts"
         owner: "{{ mpi_node_user }}"
         group: "{{ mpi_node_group }}"

@@ -9,18 +9,18 @@
 
   tasks:
     - name: Check for presence of all PBS moms
-      shell:
-        cmd: "/opt/pbs/bin/pbsnodes -a | grep -E '(Mom = mpinode1.openpbs|Mom = mpinode2.openpbs)'"
+      ansible.builtin.shell:
+        cmd: "/opt/pbs/bin/pbsnodes -a | grep -E '(Mom = mpinode1|Mom = mpinode2)'"
       register: _pbsnodes_a
 
     - name: Assert correct number of PBS moms was found
-      assert:
+      ansible.builtin.assert:
         quiet: true
         that:
           - _pbsnodes_a.stdout_lines | count == 2
 
     - name: Check passwordless n-to-n SSH connection
-      command:
+      ansible.builtin.command:
         cmd: "ssh {{ item }} hostname"
       become: true
       become_user: "{{ mpi_node_user }}"
@@ -28,7 +28,7 @@
       loop: "{{ ansible_play_batch }}"
 
     - name: Create submit script for testing
-      copy:
+      ansible.builtin.copy:
         content: |
           #PBS -q myqueue
           hostname
@@ -47,7 +47,7 @@
       #   * -o:        Set output file name with absolute path
       ###
     - name: Submit test-job to PBS queue
-      command:
+      ansible.builtin.command:
         cmd: >-
           /opt/pbs/bin/qsub
           -l nodes={{ item.node }}
@@ -66,21 +66,21 @@
       delegate_to: pbsheadnode
 
     - name: Receive back the job output file 1
-      slurp:
+      ansible.builtin.slurp:
         src: "/home/mpiuser/job1.out"
       register: _job1_output
       run_once: true
       delegate_to: pbsheadnode
 
     - name: Receive back the job output file 2
-      slurp:
+      ansible.builtin.slurp:
         src: "/home/mpiuser/job2.out"
       register: _job2_output
       run_once: true
       delegate_to: pbsheadnode
 
     - name: Check content of job output files
-      assert:
+      ansible.builtin.assert:
         quiet: true
         that:
           - "_{{ item.name }}_output.content | b64decode | trim == '{{ item.node }}'"
