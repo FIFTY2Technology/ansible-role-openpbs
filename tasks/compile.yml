@@ -11,7 +11,7 @@
     - name: Configure the build
       ansible.builtin.command:
         chdir: "{{ _openpbs_compile_dir }}"
-        cmd: "/bin/sh configure --prefix={{ openpbs_prefix }}"
+        cmd: "/bin/sh configure PBS_VERSION={{ openpbs_version }} --prefix={{ openpbs_prefix }}"
       changed_when: false
 
     - name: Build PBS
