@@ -1,6 +1,6 @@
 ---
 
-image: docker:stable-dind
+image: docker:dind-rootless
 
 services:
   - docker:dind
