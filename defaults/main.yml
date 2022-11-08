@@ -13,7 +13,7 @@ openpbs_version: latest
 
 openpbs_prefix: /opt/pbs
 
-openpbs_server_hostname: "{{ groups['pbsscheduler'] | first }}"
+openpbs_server_hostname: "{{ groups['pbsheadnode'] | first }}"
 
 openpbs_queue:
   - name: myqueue
@@ -25,8 +25,8 @@ openpbs_queue:
 # Decide if a host is a PBS MOM or a PBS server, based on its group memberships.
 ###
 openpbs_server: "{{ \
-  ( inventory_hostname in groups['pbsscheduler'] ) and not
-  ( inventory_hostname in groups['mpinodes'] ) }}"
+  (inventory_hostname in groups['pbsheadnode']) and not
+  (inventory_hostname in groups['mpinodes']) }}"
 openpbs_mom: "{{ \
-  ( inventory_hostname in groups['mpinodes'] ) and not
-  ( inventory_hostname in groups['pbsscheduler'] ) }}"
+  (inventory_hostname in groups['mpinodes']) and not
+  (inventory_hostname in groups['pbsheadnode']) }}"

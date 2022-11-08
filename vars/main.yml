@@ -1,0 +1,80 @@
+---
+
+_openpbs_required_packages_build:
+  Debian:
+    - gcc
+    - make
+    - libtool
+    - libhwloc-dev
+    - libx11-dev
+    - libxt-dev
+    - libedit-dev
+    - libical-dev
+    - ncurses-dev
+    - perl
+    - postgresql-server-dev-all
+    - postgresql-contrib
+    - python3-dev
+    - tcl-dev
+    - tk-dev
+    - swig
+    - libexpat-dev
+    - libssl-dev
+    - libxext-dev
+    - libxft-dev
+    - autoconf
+    - automake
+    - g++
+  RedHat:
+    - gcc
+    - make
+    - rpm-build
+    - libtool
+    - hwloc-devel
+    - libX11-devel
+    - libXt-devel
+    - libedit-devel
+    - libical-devel
+    - ncurses-devel
+    - perl
+    - postgresql-devel
+    - postgresql-contrib
+    - python3-devel
+    - tcl-devel
+    - tk-devel
+    - swig
+    - expat-devel
+    - openssl-devel
+    - libXext
+    - libXft
+    - autoconf
+    - automake
+    - gcc-c++
+
+openpbs_required_packages_build: "{{ _openpbs_required_packages_build[ansible_os_family] }}"
+
+_openpbs_required_packages_run:
+  Debian:
+    - expat
+    - libedit2
+    - postgresql
+    - python3
+    - postgresql-contrib
+    - sendmail-bin
+    - sudo
+    - tcl
+    - tk
+    - libical3
+  RedHat:
+    - expat
+    - libedit
+    - postgresql-server
+    - postgresql-contrib
+    - python3
+    - sendmail
+    - sudo
+    - tcl
+    - tk
+    - libical
+
+openpbs_required_packages_run: "{{ _openpbs_required_packages_run[ansible_os_family] }}"
