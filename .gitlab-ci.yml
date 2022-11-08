@@ -1,73 +1,22 @@
 ---
 
-stages:
-  - setup
-  - lint
-  - test
+image: docker:stable-dind
 
-###
-# Setup
-###
+services:
+  - docker:dind
 
-.activate-python-venv: &activate-python-venv
-  - . venv/bin/activate
+before_script:
+  - apk add --no-cache
+    python3 python3-dev py3-pip gcc git curl build-base
+    autoconf automake py3-cryptography linux-headers
+    musl-dev libffi-dev openssl-dev openssh
+  - docker info
+  - python3 --version
+  - python3 -m pip install ansible molecule[docker]
+  - ansible --version
+  - molecule --version
 
-setup_environment:
-  image: python:3.9.2-slim-buster
-  stage: setup
-  script:
-    - python -m venv --copies venv
-    - *activate-python-venv
-    - echo $PATH
-    - pip install --upgrade pip
-    - pip install ${FIFTY2_PYPI_MIRROR} --requirement requirements.txt --no-cache
-  artifacts:
-    expire_in: 1 day
-    paths:
-      - venv/
-  tags:
-    - Docker_native_Linux
-
-###
-# Linting
-###
-
-ansible-lint:
-  stage: lint
-  image: registry.gitlab.com/pipeline-components/ansible-lint:latest
-  script:
-    - ansible-lint
-  tags:
-    - Automation
-
-yamllint:
-  stage: lint
-  image: registry.gitlab.com/pipeline-components/yamllint:latest
-  script:
-    - yamllint .
-  tags:
-    - Automation
-
-###
-# Test
-###
-
-molecule-test:
+molecule:
   stage: test
-  needs:
-    - setup_environment
   script:
-    - ls -la
-    - python -V
-    - *activate-python-venv
-    - echo $PATH
-    - python -V
-    - pip freeze
-    - ./venv/bin/ansible --version
-    - ansible --version
-    - molecule test
-  parallel:
-    matrix:
-      - MOLECULE_DISTRO: [centos8, debian10, ubuntu1804]
-  tags:
-    - Docker_native_Linux
+    - molecule test -d docker
