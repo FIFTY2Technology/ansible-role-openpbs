@@ -20,3 +20,5 @@ molecule:
   stage: test
   script:
     - molecule test -d docker
+  tags:
+    - Automation
