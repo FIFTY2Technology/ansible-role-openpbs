@@ -6,6 +6,8 @@
     state: absent
 
 - name: Restart PBS service
-  ansible.builtin.service:
+  ansible.builtin.systemd:
     name: pbs
     state: restarted
+  when:
+    - openpbs_allow_running

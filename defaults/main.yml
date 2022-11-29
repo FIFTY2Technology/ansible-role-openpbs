@@ -15,6 +15,13 @@ openpbs_prefix: /opt/pbs
 
 openpbs_server_hostname: "{{ groups['pbsheadnode'] | first }}"
 
+###
+# Allow OpenPBS systemd service to be started and restarted through Ansible run.
+# Might not be desired during version upgrades, set to 'false' in that case.
+# Default: true
+###
+openpbs_allow_running: true
+
 openpbs_queue:
   - name: myqueue
     type: execution

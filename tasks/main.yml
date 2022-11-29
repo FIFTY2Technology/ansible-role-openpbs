@@ -31,3 +31,5 @@
     name: pbs
     enabled: true
     state: started
+  when:
+    - openpbs_allow_running
