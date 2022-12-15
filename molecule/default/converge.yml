@@ -3,6 +3,13 @@
 - name: Converge
   hosts: all
 
+  vars:
+    openpbs_queue:
+      - name: myqueue
+        type: execution
+        enabled: true
+        started: true
+
   roles:
     - role: fifty2technology.openpbs
 

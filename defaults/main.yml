@@ -15,12 +15,6 @@ openpbs_prefix: /opt/pbs
 
 openpbs_server_hostname: "{{ groups['pbsheadnode'] | first }}"
 
-openpbs_queue:
-  - name: myqueue
-    type: execution
-    enabled: true
-    started: true
-
 ###
 # Decide if a host is a PBS MOM or a PBS server, based on its group memberships.
 ###

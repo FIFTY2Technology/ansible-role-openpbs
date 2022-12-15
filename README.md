@@ -24,7 +24,6 @@ All variables which can be overridden are stored in defaults/main.yml file as we
 | `openpbs_version` | latest | OpenPBS version to install. Must be 'latest' or match a tag name in OpenPBS (e.g. `v20.0.1`). See GitHub repostiory: https://github.com/openpbs/openpbs/tags |
 | `openpbs_prefix` | /opt/pbs | Installation prefix |
 | `openpbs_server_hostname` | `"{{ groups['pbsheadnode'][0] }}"` | Hostname of the OpenPBS server (headnode). Default is based on inventory group membership. |
-| `openpbs_queue` | `- name: myqueue`<br>`  type: execution`<br>`  enabled: true`<br>`  started: true` | List of queues to create. Only the shown basic configuration options are supported. |
 | `openpbs_server` | `"{{ ( inventory_hostname in groups['pbsheadnode'] ) and not`<br>`  ( inventory_hostname in groups['mpinodes'] ) }}"` | Decide if a host is a PBS MOM or a PBS server, based on its group memberships. Adapt group names where necessary, logic must not be changed. |
 | `openpbs_mom` | `"{{ ( inventory_hostname in groups['mpinodes'] ) and not`<br>`  ( inventory_hostname in groups['pbsheadnode'] ) }}"` | Decide if a host is a PBS MOM or a PBS server, based on its group memberships. Adapt group names where necessary, logic not be changed. |
 
