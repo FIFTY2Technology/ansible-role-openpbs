@@ -16,12 +16,6 @@ openpbs_install_dir: /opt/pbs
 ###
 openpbs_build_dir: /opt/build_pbs
 
-openpbs_queue:
-  - name: myqueue
-    type: execution
-    enabled: true
-    started: true
-
 ###
 # Decide if a host is a PBS MOM or a PBS server, based on its group memberships.
 ###

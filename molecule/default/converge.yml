@@ -3,6 +3,17 @@
 - name: Converge
   hosts: all
 
+  ###
+  # Used in post_tasks to see if OpenPBS works (only in Molecule runs, this does
+  # not run in the actual role).
+  ###
+  vars:
+    openpbs_queue:
+      - name: myqueue
+        type: execution
+        enabled: true
+        started: true
+
   roles:
     - role: fifty2technology.openpbs
 
