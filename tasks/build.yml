@@ -1,0 +1,38 @@
+---
+
+- name: Generate configure script and Makefiles
+  ansible.builtin.command:
+    chdir: "{{ _openpbs_build_dir }}"
+    cmd: /bin/sh autogen.sh
+  changed_when: false
+
+- name: Configure the build
+  ansible.builtin.command:
+    chdir: "{{ _openpbs_build_dir }}"
+    cmd: "/bin/sh configure PBS_VERSION={{ openpbs_version }} --prefix={{ openpbs_prefix }}"
+  changed_when: false
+
+- name: Build PBS
+  community.general.make:
+    chdir: "{{ _openpbs_build_dir }}"
+
+- name: Install PBS
+  community.general.make:
+    chdir: "{{ _openpbs_build_dir }}"
+    target: install
+
+- name: Configure PBS by executing the post-install script
+  ansible.builtin.command:
+    cmd: "{{ openpbs_prefix }}/libexec/pbs_postinstall"
+  register: _openpbs_postinstall
+  changed_when: false
+
+- name: Some file permissions must be modified to add SUID privilege
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - path: "{{ openpbs_prefix }}/sbin/pbs_iff"
+      mode: '04755'
+    - path: "{{ openpbs_prefix }}/sbin/pbs_rcp"
+      mode: '04755'
