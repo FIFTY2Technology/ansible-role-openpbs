@@ -1,19 +1,20 @@
 ---
 
-openpbs_user: openpbs
-openpbs_group: openpbs
-
-openpbs_home_dir: "/home/{{ openpbs_user }}"
-
 ###
 # OpenPBS version to install. Must be 'latest' or match a tag name in OpenPBS
 # GitHub repostiory: https://github.com/openpbs/openpbs/tags
 ###
 openpbs_version: latest
 
-openpbs_prefix: /opt/pbs
+###
+# Installation directory. Will also be added to your '$PATH'.
+###
+openpbs_install_dir: /opt/pbs
 
-openpbs_server_hostname: "{{ groups['pbsheadnode'] | first }}"
+###
+# Build directory
+###
+openpbs_build_dir: /opt/build_pbs
 
 openpbs_queue:
   - name: myqueue
@@ -30,3 +31,10 @@ openpbs_server: "{{ \
 openpbs_mom: "{{ \
   (inventory_hostname in groups['mpinodes']) and not
   (inventory_hostname in groups['pbsheadnode']) }}"
+
+###
+# User created for PBS-internal use, for accessing the database. Can be handy
+# to have access to in case update breaks and you have to check the DB manually.
+###
+openpbs_dbuser_username: pbsdata
+openpbs_dbuser_password: plzchangeme

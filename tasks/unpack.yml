@@ -1,15 +1,15 @@
 ---
 
-- name: Set name for compile directory based on OpenPBS version
+- name: Set name for build directory based on OpenPBS version
   ansible.builtin.set_fact:
-    _openpbs_compile_dir: "{{ openpbs_home_dir }}/openpbs_v{{ openpbs_version }}"
+    _openpbs_build_dir: "{{ openpbs_build_dir }}/{{ openpbs_version }}"
 
 - name: Create directory to unpack into
   ansible.builtin.file:
-    name: "{{ _openpbs_compile_dir }}"
+    name: "{{ _openpbs_build_dir }}"
     state: directory
-    owner: "{{ openpbs_user }}"
-    group: "{{ openpbs_group }}"
+    owner: root
+    group: root
     mode: '0750'
 
 ###
@@ -21,9 +21,9 @@
 - name: Unpack OpenPBS archive
   ansible.builtin.unarchive:
     src: "{{ _download_archive.dest }}"
-    dest: "{{ _openpbs_compile_dir }}"
-    owner: "{{ openpbs_user }}"
-    group: "{{ openpbs_group }}"
+    dest: "{{ _openpbs_build_dir }}"
+    owner: root
+    group: root
     extra_opts:
       - --strip-components=1
   check_mode: false

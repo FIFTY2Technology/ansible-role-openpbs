@@ -62,18 +62,14 @@
   when:
     - openpbs_version == 'latest'
 
-- name: Create user {{ openpbs_user }}
+###
+# Only create this user on the headnode, the MoMs don't run a PBS dataservice.
+###
+- name: Create PBS datastore user
   ansible.builtin.user:
-    name: "{{ openpbs_user }}"
-    home: "{{ openpbs_home_dir }}"
-    password: '*'
+    name: "{{ openpbs_dbuser_username }}"
+    system: true
+    password: "{{ openpbs_dbuser_password | password_hash('sha512', 'nevergonnagiveyouup') }}"
     state: present
-
-- name: Grant OpenPBS user sudo rights
-  ansible.builtin.template:
-    src: sudoers.d.j2
-    dest: /etc/sudoers.d/openpbs
-    validate: '/usr/sbin/visudo -cf %s'
-    owner: root
-    group: root
-    mode: '0440'
+  when:
+    - openpbs_server and not openpbs_mom
