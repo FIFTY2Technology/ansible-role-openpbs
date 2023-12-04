@@ -25,7 +25,7 @@
               create queue {{ queue.name | quote }}
               queue_type={{ queue.type | quote }}
           args:
-            executable: "{{ openpbs_prefix }}/bin/qmgr"
+            executable: "{{ openpbs_install_dir }}/bin/qmgr"
           register: _openpbs_create_queue
           failed_when: false
           changed_when:
@@ -59,7 +59,7 @@
               started={{ queue.started | ternary('true', 'false') }},
               enabled={{ queue.enabled | ternary('true', 'false') }}
           args:
-            executable: "{{ openpbs_prefix }}/bin/qmgr"
+            executable: "{{ openpbs_install_dir }}/bin/qmgr"
           register: _openpbs_configure_queue
           failed_when:
             - _openpbs_configure_queue.rc > 0
@@ -76,7 +76,7 @@
           ansible.builtin.shell: >
               create node {{ inventory_hostname_short | quote }}
           args:
-            executable: "{{ openpbs_prefix }}/bin/qmgr"
+            executable: "{{ openpbs_install_dir }}/bin/qmgr"
           register: _openpbs_add_nodes
           failed_when:
             - _openpbs_add_nodes.rc != 0

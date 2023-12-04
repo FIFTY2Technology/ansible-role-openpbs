@@ -9,7 +9,7 @@
 - name: Configure the build
   ansible.builtin.command:
     chdir: "{{ _openpbs_build_dir }}"
-    cmd: "/bin/sh configure PBS_VERSION={{ openpbs_version }} --prefix={{ openpbs_prefix }}"
+    cmd: "/bin/sh configure PBS_VERSION={{ openpbs_version }} --prefix={{ openpbs_install_dir }}"
   changed_when: false
 
 - name: Build PBS
@@ -23,7 +23,7 @@
 
 - name: Configure PBS by executing the post-install script
   ansible.builtin.command:
-    cmd: "{{ openpbs_prefix }}/libexec/pbs_postinstall"
+    cmd: "{{ openpbs_install_dir }}/libexec/pbs_postinstall"
   register: _openpbs_postinstall
   changed_when: false
 
@@ -32,7 +32,7 @@
     path: "{{ item.path }}"
     mode: "{{ item.mode }}"
   loop:
-    - path: "{{ openpbs_prefix }}/sbin/pbs_iff"
+    - path: "{{ openpbs_install_dir }}/sbin/pbs_iff"
       mode: '04755'
-    - path: "{{ openpbs_prefix }}/sbin/pbs_rcp"
+    - path: "{{ openpbs_install_dir }}/sbin/pbs_rcp"
       mode: '04755'

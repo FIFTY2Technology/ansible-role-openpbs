@@ -3,7 +3,7 @@ PBS_START_SERVER={{ (openpbs_server and not openpbs_mom) | ternary('1','0') }}
 PBS_START_SCHED={{ (openpbs_server and not openpbs_mom) | ternary('1','0') }}
 PBS_START_COMM={{ (openpbs_server and not openpbs_mom) | ternary('1','0') }}
 PBS_START_MOM={{ (openpbs_mom and not openpbs_server) | ternary('1','0') }}
-PBS_EXEC={{ openpbs_prefix }}
+PBS_EXEC={{ openpbs_install_dir }}
 PBS_HOME=/var/spool/pbs
 PBS_CORE_LIMIT=unlimited
 {# Changing this from '/bin/scp' to '/usr/bin/scp' on CentOS 8 is fine, since #}
