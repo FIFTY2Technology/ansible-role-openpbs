@@ -1,7 +1,5 @@
 ---
 
-dependency:
-  name: galaxy
 driver:
   name: podman
 platforms:
@@ -53,3 +51,9 @@ provisioner:
           pbshead1:
 verifier:
   name: ansible
+scenario:
+  create_sequence:
+    - create
+    - prepare
+  converge_sequence:
+    - converge
