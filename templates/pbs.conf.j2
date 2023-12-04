@@ -1,4 +1,5 @@
-PBS_SERVER={{ openpbs_server_hostname }}
+# {{ ansible_managed }}
+PBS_SERVER={{ groups['pbsheadnode'] | first }}
 PBS_START_SERVER={{ (openpbs_server and not openpbs_mom) | ternary('1','0') }}
 PBS_START_SCHED={{ (openpbs_server and not openpbs_mom) | ternary('1','0') }}
 PBS_START_COMM={{ (openpbs_server and not openpbs_mom) | ternary('1','0') }}
