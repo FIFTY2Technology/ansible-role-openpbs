@@ -69,7 +69,7 @@
   ansible.builtin.user:
     name: "{{ openpbs_dbuser_username }}"
     system: true
-    password: "{{ openpbs_dbuser_password | password_hash('sha512', 'nevergonnagiveyouup') }}"
+    password: "{{ openpbs_dbuser_password | password_hash('sha512', 'nevergonnagiveyo') }}"
     state: present
   when:
     - openpbs_server and not openpbs_mom
