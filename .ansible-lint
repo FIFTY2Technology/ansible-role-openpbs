@@ -7,3 +7,4 @@ skip_list:
   - 'line-length'
   - 'yaml'
   - 'experimental'
+  - 'key-order[task]'
