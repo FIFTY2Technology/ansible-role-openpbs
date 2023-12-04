@@ -5,7 +5,7 @@ dependency:
 driver:
   name: podman
 platforms:
-  - name: mpinode1
+  - name: pbsmom1
     image: "geerlingguy/docker-${MOLECULE_DISTRO:-rockylinux9}-ansible:latest"
     command: /sbin/init
     network: "openpbs"
@@ -16,7 +16,7 @@ platforms:
     tmpfs:
       - /run
       - /tmp
-  - name: mpinode2
+  - name: pbsmom2
     image: "geerlingguy/docker-${MOLECULE_DISTRO:-rockylinux9}-ansible:latest"
     command: /sbin/init
     network: "openpbs"
@@ -27,7 +27,7 @@ platforms:
     tmpfs:
       - /run
       - /tmp
-  - name: pbsheadnode
+  - name: pbshead1
     image: "geerlingguy/docker-${MOLECULE_DISTRO:-rockylinux9}-ansible:latest"
     command: /sbin/init
     network: "openpbs"
@@ -46,10 +46,10 @@ provisioner:
     hosts:
       mpinodes:
         hosts:
-          mpinode1:
-          mpinode2:
+          pbsmom1:
+          pbsmom2:
       pbsheadnode:
         hosts:
-          pbsheadnode:
+          pbshead1:
 verifier:
   name: ansible

@@ -19,7 +19,7 @@
   tasks:
     - name: Check for presence of all PBS moms
       ansible.builtin.shell:
-        cmd: "/opt/pbs/bin/pbsnodes -a | grep -E '(Mom = mpinode1|Mom = mpinode2)'"
+        cmd: "/opt/pbs/bin/pbsnodes -a | grep -E '(Mom = pbsmom1|Mom = pbsmom2)'"
       register: _pbsnodes_a
 
     - name: Assert correct number of PBS moms was found
@@ -46,7 +46,7 @@
         group: "{{ mpi_node_user }}"
         mode: '0640'
       run_once: true
-      delegate_to: pbsheadnode
+      delegate_to: pbshead1
 
       ###
       # 'qsub' arguments:
@@ -67,26 +67,26 @@
       become_user: "{{ mpi_node_user }}"
       register: _qsub
       loop:
-        - node: mpinode1
+        - node: pbsmom1
           name: job1
-        - node: mpinode2
+        - node: pbsmom2
           name: job2
       run_once: true
-      delegate_to: pbsheadnode
+      delegate_to: pbshead1
 
     - name: Receive back the job output file 1
       ansible.builtin.slurp:
         src: "/home/mpiuser/job1.out"
       register: _job1_output
       run_once: true
-      delegate_to: pbsheadnode
+      delegate_to: pbshead1
 
     - name: Receive back the job output file 2
       ansible.builtin.slurp:
         src: "/home/mpiuser/job2.out"
       register: _job2_output
       run_once: true
-      delegate_to: pbsheadnode
+      delegate_to: pbshead1
 
     - name: Check content of job output files
       ansible.builtin.assert:
@@ -94,8 +94,8 @@
         that:
           - "_{{ item.name }}_output.content | b64decode | trim == '{{ item.node }}'"
       loop:
-        - node: mpinode1
+        - node: pbsmom1
           name: job1
-        - node: mpinode2
+        - node: pbsmom2
           name: job2
       run_once: true
