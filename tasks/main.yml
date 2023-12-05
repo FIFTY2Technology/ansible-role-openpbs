@@ -18,8 +18,8 @@
     - name: Import unpack tasks
       ansible.builtin.import_tasks: unpack.yml
 
-    - name: Import compile tasks
-      ansible.builtin.import_tasks: compile.yml
+    - name: Import build tasks
+      ansible.builtin.import_tasks: build.yml
   when:
     - _openpbs_installed_version is version( openpbs_version, '<' )
 
