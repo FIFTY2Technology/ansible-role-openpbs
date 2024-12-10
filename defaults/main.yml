@@ -17,6 +17,16 @@ openpbs_install_dir: /opt/pbs
 openpbs_build_dir: /opt/build_pbs
 
 ###
+# Path to the config file template for '/etc/pbs.conf'
+###
+openpbs_pbs_conf_template: pbs.conf.j2
+
+###
+# Path to the config file template for '/var/spool/pbs/mom_priv/config'
+###
+openpbs_mom_priv_config_template: mom_priv_config.j2
+
+###
 # Decide if a host is a PBS MOM or a PBS server, based on its group memberships.
 ###
 openpbs_server: "{{ \

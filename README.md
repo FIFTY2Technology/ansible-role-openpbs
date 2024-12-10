@@ -23,6 +23,8 @@ All variables which can be overridden are stored in defaults/main.yml file as we
 | `openpbs_version` | latest | OpenPBS version to install. Must be 'latest' or match a tag name in OpenPBS (e.g. `v20.0.1`). See GitHub repostiory: https://github.com/openpbs/openpbs/tags |
 | `openpbs_install_dir` | /opt/pbs | Installation directory. Will also be added to your `$PATH`. |
 | `openpbs_build_dir` | /opt/build_pbs | Build directory |
+| `openpbs_pbs_conf_template` | pbs.conf.j2 | Path to the config file template for `/etc/pbs.conf` |
+| `openpbs_mom_priv_config_template` | mom_priv_config.j2 | Path to the config file template for `/var/spool/pbs/mom_priv/config`
 | `openpbs_server_hostname` | `"{{ groups['pbsheadnode'][0] }}"` | Hostname of the OpenPBS server (headnode). Default is based on inventory group membership. |
 | `openpbs_server` | `"{{ ( inventory_hostname in groups['pbsheadnode'] ) and not`<br>`  ( inventory_hostname in groups['mpinodes'] ) }}"` | Decide if a host is a PBS MOM or a PBS server, based on its group memberships. Adapt group names where necessary, logic must not be changed. |
 | `openpbs_mom` | `"{{ ( inventory_hostname in groups['mpinodes'] ) and not`<br>`  ( inventory_hostname in groups['pbsheadnode'] ) }}"` | Decide if a host is a PBS MOM or a PBS server, based on its group memberships. Adapt group names where necessary, logic not be changed. |
