@@ -19,6 +19,7 @@
     - name: Format output of version checking
       ansible.builtin.set_fact:
         _openpbs_installed_version: "{{ _openpbs_installed_version_raw.stdout.split('=')[1] | trim }}"
+  check_mode: false
   when:
     - _openpbs_installation.stat.exists
 
@@ -28,6 +29,7 @@
 - name: Request OpenPBS installation
   ansible.builtin.set_fact:
     _openpbs_installed_version: "0.0"
+  check_mode: false
   when:
     - not _openpbs_installation.stat.exists
 
