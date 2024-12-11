@@ -2,9 +2,20 @@
 
 - name: Template /etc/pbs.conf to configure the PBS service that should be started
   ansible.builtin.template:
-    src: pbs.conf.j2
+    src: "{{ openpbs_pbs_conf_template }}"
     dest: /etc/pbs.conf
     owner: root
     group: root
     mode: '0644'
   notify: Restart PBS service
+
+- name: Template MoM config
+  ansible.builtin.template:
+    src: "{{ openpbs_mom_priv_config_template }}"
+    dest: /var/spool/pbs/mom_priv/config
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart PBS service
+  when:
+    - openpbs_mom and not openpbs_server

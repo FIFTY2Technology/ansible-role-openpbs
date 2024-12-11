@@ -76,14 +76,14 @@
 
     - name: Receive back the job output file 1
       ansible.builtin.slurp:
-        src: "/home/mpiuser/job1.out"
+        src: "/home/{{ mpi_node_user }}/job1.out"
       register: _job1_output
       run_once: true
       delegate_to: pbshead1
 
     - name: Receive back the job output file 2
       ansible.builtin.slurp:
-        src: "/home/mpiuser/job2.out"
+        src: "/home/{{ mpi_node_user }}/job2.out"
       register: _job2_output
       run_once: true
       delegate_to: pbshead1
